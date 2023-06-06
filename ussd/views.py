@@ -13,6 +13,7 @@ def index(request):
         text = request.POST.get('text')
 
         response = ""
+        sms = SMS()
 
         if text == "":
             response = "CON Welcome to our News subscription service \n"
@@ -128,39 +129,67 @@ def index(request):
 
         # confirmationn menus 
         elif text == "1*1*1":
-             response = "END You have succesfuly subsrcibed to Politics breaking news  \n"
-             sms = SMS()
-             sms.send(phone_number,"You have succesfuly subsrcibed to Politics breaking news")
+             response = "END You have succesfuly subscribed to Politics breaking news  \n"
+             print('sending sms')
+             sms.send(phone_number,"You have succesfuly subscribed to Politics breaking news")
         elif text == "1*2*1":
-             response = "END You have succesfuly subsrcibed to Disasters and Accidents  \n"
+             response = "END You have succesfuly subscribed to Disasters and Accidents  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Disasters and Accidents ")
+
         elif text == "1*3*1":
-             response = "END You have succesfuly subsrcibed to Crime and Public Safety  \n"
+             response = "END You have succesfuly subscribed to Crime and Public Safety  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Crime and Public Safety ")
+
         elif text == "2*1*1":
-             response = "END You have succesfuly subsrcibed to Community Events  \n"
+             response = "END You have succesfuly subscribed to Community Events  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Community Events ")
+
         elif text == "2*2*1":
-             response = "END You have succesfuly subsrcibed to Education news  \n"
+             response = "END You have succesfuly subscribed to Education news  \n"
+             sms.send(phone_number," You have succesfuly subscribed to Education news ")
+
 
         elif text == "3*1*1":
-             response = "END You have succesfuly subsrcibed to Stock Market news  \n"
+             response = "END You have succesfuly subscribed to Stock Market news  \n"
+             sms.send(phone_number," You have succesfuly subscribed to Stock Market news ")
+
         elif text == "3*2*1":
-             response = "END You have succesfuly subsrcibed to Corporate News  \n"
+             response = "END You have succesfuly subscribed to Corporate News  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Corporate News")
+
         elif text == "4*1*1":
-             response = "END You have succesfuly subsrcibed to Elections and Campaigns news  \n"
+             response = "END You have succesfuly subscribed to Elections and Campaigns news  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Elections and Campaigns news")
+
         elif text == "4*2*1":
-             response = "END You have succesfuly subsrcibed to Government Policies and Legislation news  \n"
+             response = "END You have succesfuly subscribed to Government Policies and Legislation news  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Government Policies and Legislation news")
+
         elif text == "5*1*1":
-             response = "END You have succesfuly subsrcibed to Medical Research and Breakthroughs news  \n"
+             response = "END You have succesfuly subscribed to Medical Research and Breakthroughs news  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Medical Research and Breakthroughs news")
+
         elif text == "5*2*1":
-             response = "END You have succesfuly subsrcibed to Mental Health and Well-being news  \n"
+             response = "END You have succesfuly subscribed to Mental Health and Well-being news  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Mental Health and Well-being news")
+
         elif text == "6*1*1":
-             response = "END You have succesfuly subsrcibed to  Football/Soccer news  \n"
+             response = "END You have succesfuly subscribed to  Football/Soccer news  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to  Football/Soccer news")
+
 
         elif text == "6*2*1":
-             response = "END You have succesfuly subsrcibed to Basketball sport news  \n"
+             response = "END You have succesfuly subscribed to Basketball sport news  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Basketball sport news")
+
         elif text == "6*3*1":
-             response = "END You have succesfuly subsrcibed to Tennis/sport news  \n"
+             response = "END You have succesfuly subscribed to Tennis/sport news  \n"
+             sms.send(phone_number,"You have succesfuly subscribed to Tennis/sport news")
+
         else:
              response = "END Cancellled \n"
+             sms.send(phone_number,"Thank you for using SOPHY NEWS, Please try again later")
+
 
         return HttpResponse(response, content_type='text/plain')
 
