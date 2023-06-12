@@ -6,6 +6,8 @@ from .SMS import SMS
     
 @csrf_exempt
 def index(request):
+    if request.method == 'GET':
+        return HttpResponse('<h1>USSD Entry - Welcome to Sophy News</h1>')
     if request.method == 'POST':
         session_id = request.POST.get('sessionId')
         service_code = request.POST.get('serviceCode')
@@ -192,5 +194,60 @@ def index(request):
 
 
         return HttpResponse(response, content_type='text/plain')
+
+
+
+@csrf_exempt
+def incomingSMS(request):
+    if request.method == "GET":
+         return HttpResponse("<h1>Incoming SMS Entry Point</h1>")
+
+    if request.method == 'POST':
+                    print("Incoming SMS now")
+                    # extract data from the quesry dict
+                    data = request.POST
+
+                    from_number = data['from']
+                    id = data['id']
+                    link_id = data['linkId']
+                    text = data['text']
+                    to = data['to']
+                    
+                    SUB_KEYWORD = "SUB"
+                    sms = SMS()
+
+
+                    if text.upper().startswith(SUB_KEYWORD) and to == "3445":
+                        # Extract the subscribed services after the SUB keyword
+                        subscribed_services = text[len(SUB_KEYWORD):].strip().split(',')
+                        
+                        # Generate the subscription message with the list of subscribed services
+                        subscription_message = "You have successfully subscribed to {}. You will receive news once available".format(", ".join(subscribed_services))
+                        
+                        # Send the subscription SMS
+                        sms.send(from_number, subscription_message)
+                        return HttpResponse('Success')
+                    
+                    STOP_KEYWORD = "STOP"
+                    
+                    if text.upper().startswith(STOP_KEYWORD) and to == "3445":
+                        # Extract the subscribed services after the SUB keyword
+                        unsubscribed_services = text[len(STOP_KEYWORD):].strip().split(',')
+                        
+                        # Generate the subscription message with the list of subscribed services
+                        subscription_message = "You have unsubscribed to {} News. feel free to re-subscribe again soon ".format(",".join(unsubscribed_services))
+                        
+                        # Send the subscription SMS
+                        sms.send(from_number, subscription_message)
+                        return HttpResponse('Success')
+                    
+                    error_subscription = f"Opps! failed to subscribe to the specified service , make use of correct format ie STOP XXX or SUB XXX !"
+                    sms.send(from_number, error_subscription)
+                    return HttpResponse('Failed !')
+
+
+
+
+                    
 
 
