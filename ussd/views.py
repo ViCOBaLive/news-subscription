@@ -212,12 +212,14 @@ def incomingSMS(request):
                     link_id = data['linkId']
                     text = data['text']
                     to = data['to']
-                    
+
+                    SUB_SHORTCODE = "60060"
                     SUB_KEYWORD = "SUB"
+                    STOP_KEYWORD = "STOP"
                     sms = SMS()
 
 
-                    if text.upper().startswith(SUB_KEYWORD) and to == "3445":
+                    if text.upper().startswith(SUB_KEYWORD) and to == SUB_SHORTCODE:
                         # Extract the subscribed services after the SUB keyword
                         subscribed_services = text[len(SUB_KEYWORD):].strip().split(',')
                         
@@ -228,7 +230,6 @@ def incomingSMS(request):
                         sms.send(from_number, subscription_message)
                         return HttpResponse('Success')
                     
-                    STOP_KEYWORD = "STOP"
                     
                     if text.upper().startswith(STOP_KEYWORD) and to == "3445":
                         # Extract the subscribed services after the SUB keyword
