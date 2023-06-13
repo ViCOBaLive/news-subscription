@@ -1,10 +1,9 @@
-from django.urls import path,include
-from .views import *
+from django.urls import path
+from .views import USSDView, IncomingSMSView
+
 
 urlpatterns = [
-    path("ussd/", index,name="ussd_index" ),
-    path("", index,name="ussd_index" ),
-    path("incoming-sms/", incomingSMS,name="ussd_index" ),
-
+    path('ussd/', USSDView.index, name='ussd_index'),
+    path('incoming-sms/', IncomingSMSView.index, name='incomingView'),
 
 ]
