@@ -4,7 +4,7 @@ class SMS:
     def __init__(self):
         # Set your app credentials
         self.username = "sandbox"
-        self.api_key = "ca3cef4bf11bf24c1d69c07ff95ff1e04b54282ad20ea7478b6dcbc93534124f"
+        self.api_key = "66c5aff6bf26de8bf6176c35478f6dcef2cae57d92f24db1dd459637"
 
         # Initialize the SDK
         africastalking.initialize(self.username, self.api_key)

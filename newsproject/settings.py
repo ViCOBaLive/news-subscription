@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
+AUTH_USER_MODEL = 'news.User'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -52,6 +54,18 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "newsproject.urls"
+
+# caching for language monthly in ussd
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'ussdCacheTable',
+        'TIMEOUT': 3600,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
 
 TEMPLATES = [
     {
