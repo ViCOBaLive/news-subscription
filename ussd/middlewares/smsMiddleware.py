@@ -81,3 +81,25 @@ class SMSHandler:
         formatted_phone_number = '+255' + phone_number
 
         return formatted_phone_number
+    
+    def sendMultipleSMS(self, recipients, message):
+            try:
+                fmtd_recipients = []
+                for rec in recipients:
+                     phone = self.normalize_phone_number(rec)
+                     fmtd_recipients.append(phone)
+                print(f"Bulk recepients {fmtd_recipients}")
+                #Send the SMS
+                response = self.sms.send(message=message, recipients=fmtd_recipients, sender_id=self.sender_id)
+                return response
+            except Exception as e:
+                # Handle any exception that occurs during sending
+                print(f'Error sending SMS: {str(e)}')
+                return None
+    
+# rec = ["0769642828","0769642826","0769642827","0769642829"]
+# sms = SMSHandler(get_response=None)
+# sms.sendMultipleSMS(rec,'News Update!  Jacoba has marrid')
+
+
+
