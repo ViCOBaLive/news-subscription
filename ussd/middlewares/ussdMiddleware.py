@@ -61,15 +61,12 @@ class ussdMiddleware:
                 
                 # normalize the text for go back or main menu inputs
                 text = self.go_Back(self.goToMainMenu(text))
-                print(f"text-< {text}")
                 
                 Handler = ussdHandler(
                         text, session_id, phone_number, lang, BASE_URL,request).handler()
                 # Return the response with content type set to text/html
                 response = HttpResponse(Handler)
                 response['Content-Type'] = 'text/plain'
-
-                print (f'Handler -> {Handler}')
 
                 if Handler == None:
                     response['Content-Type'] = 'text/plain'

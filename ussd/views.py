@@ -33,7 +33,8 @@ class IncomingSMSView:
             return HttpResponse(data)   
         
         #post request handler
-        def post(self, request):
+        if request.method == "POST":
+            print("Incoming SMS posted")
             # Call the USSD middleware to handle the request and get the response
             middleware = IncomingSMSMiddleware(None)
             response = middleware(request)
