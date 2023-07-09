@@ -1,10 +1,13 @@
 import africastalking
+import os
+import dotenv
+dotenv.load_dotenv()
 
 class SMS:
     def __init__(self):
         # Set your app credentials
-        self.username = "sandbox"
-        self.api_key = "66c5aff6bf26de8bf6176c35478f6dcef2cae57d92f24db1dd459637"
+        self.username = os.getenv('SANDBOX_USER')
+        self.api_key = os.getenv('DEV_API_KEY')
 
         # Initialize the SDK
         africastalking.initialize(self.username, self.api_key)

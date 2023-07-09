@@ -5,6 +5,7 @@ from ussd.Handlers.utils import langs
 from django.core.cache import cache
 from news.models import User, Subscription, Subcategory
 from ussd.middlewares.smsMiddleware import SMSHandler
+from django.db.models import Q
 
 
 class ussdHandler():
@@ -45,6 +46,8 @@ class ussdHandler():
             # change language
             elif textArray[0] == '5':
                 return langs.changelanguage(self)
+            elif textArray[0] == '6':
+                return self.menu.unsubscribeMenu()
             else:
                 return self.response.invalid_input()
         if level == 2:
@@ -80,6 +83,9 @@ class ussdHandler():
             if textArray[0] == '4' and textArray[1] == '3':
                 msg = 'Daily Business Tips' if self.lang == "EN" else "Dodoso za Biashara / Kila siku"
                 return self.menu.ApprovalMenu(msg)
+            # unsubscribe
+            if textArray[0] == '6' and textArray[1] is not None and textArray[1].isnumeric():
+                return self.menu.unsubscribeConfirm(textArray[1])
         # approval
         if level == 3:
             if self.text == "1*1*1":
@@ -137,6 +143,14 @@ class ussdHandler():
                     return self.menu.SubSucccesfullRes('BUSINESS TIPS')
                 else:
                     return self.menu.SubFailedRes()
+            if textArray[0] == '6' and self.is_within_range(textArray[1]) and textArray[2] == '1':
+                news_cat = self.menu.mapNumtoProduct(textArray[1])
+                unsub = self.Unsubscribe(
+                    userphone=self.phone_number, subcategory_name=news_cat)
+                if unsub:
+                    return self.menu.unSubscribeSuccess(textArray[1])
+                else:
+                    return self.menu.unSubscribeFailed()
             else:
                 print("Invalid input")
 
@@ -175,4 +189,59 @@ class ussdHandler():
             print(str(e))
             return False
 
+    def Unsubscribe(self, userphone, subcategory_name):
+        print('Unsubscribing to ' + subcategory_name + ' news')
+        if subcategory_name == 'All':
+            # delete all subscriptions for this user
+            user = User.objects.get(phone_number=userphone)
+            subscriptions = Subscription.objects.filter(user=user)
+            for subscription in subscriptions:
+                subscription.delete()
+            print("Unsubscription to all successful.")
+            msg = ""
+            if self.lang == "EN":
+                msg = f"You have successfully unsubscribed from all news. Feel free to subscribe again anytime!"
+            else:
+                msg = f"Hongera! Umefanikiwa kujitoa kwenye taarifa zote. Karibu kusajili tena wakati wowote!"
+            self.sms.send_sms(self.phone_number, msg)
 
+            return True
+        try:
+            # Check if the user already exists
+            user = User.objects.get(phone_number=userphone)
+
+            # Construct the query using Q objects
+            query = Q(user=user) & Q(
+                subcategory__name__icontains=subcategory_name)
+
+            # Check if the subscription exists
+            subscription = Subscription.objects.filter(query).first()
+            print(subscription)
+
+            if subscription:
+                print("Unsubscription successful.")
+                msg = ""
+                if self.lang == "EN":
+                    msg = f"You have successfully unsubscribed from {subscription.subcategory.name} news. Feel free to subscribe again anytime!"
+                else:
+                    msg = f"Hongera! Umefanikiwa kujitoa kwenye taarifa za {subscription.subcategory.name}. Karibu kusajili tena wakati wowote!"
+                self.sms.send_sms(self.phone_number, msg)
+                subscription.delete()
+                return True
+            else:
+                # Subscription does not exist
+                return False
+
+        except User.DoesNotExist:
+            # User does not exist
+            return False
+        except Exception as e:
+            print(str(e))
+            return False
+
+    def is_within_range(self, value):
+        if value.isnumeric():
+            numeric_value = int(value)
+            return numeric_value >= 1 and numeric_value <= 10 or numeric_value == 98 or numeric_value == 99
+        else:
+            return False

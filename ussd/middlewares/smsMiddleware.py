@@ -5,16 +5,19 @@ from django.urls import reverse
 import requests
 import os
 # Load the .env file
+import dotenv
+dotenv.load_dotenv()
 
 class SMSHandler:
     def __init__(self, get_response):
         self.get_response = get_response
-        self.sender_id = "SOPHY-NEWS"
+        self.sender_id = os.getenv('GATEWAY_SENDER_ID')
+
         try:
             # Initialize the Africa's Talking API
-            SANDBOX_USER = "sandbox"
-            API_KEY = "66c5aff6bb1f94af3f26de8bf6176c35478f6dcef2cae57d92f24db1dd459637"
-            africastalking.initialize(username=SANDBOX_USER,api_key=API_KEY)
+            SANDBOX_USER = os.getenv('SANDBOX_USER')
+            DEV_API_KEY = os.getenv('DEV_API_KEY')
+            africastalking.initialize(username=SANDBOX_USER,api_key=DEV_API_KEY)
             self.sms = africastalking.SMS
         except Exception as e:
             print(f'Error initializing Africa\'s Talking: {str(e)}')
