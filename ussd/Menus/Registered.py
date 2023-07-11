@@ -151,7 +151,6 @@ class RegisteredMenu:
                                  '7. Stock Market \n'
                                  '8. Currency Exchange Rates \n'
                                  '9. Daily Businness Tips \n'
-                                 '10. All \n'
                                  )
         elif self.lang == 'SW':
             return self.get_menu(f'Jitoa kwenye: \n'
@@ -164,7 +163,6 @@ class RegisteredMenu:
                                  '7. Soko la hisa \n'
                                  '8. Thamani za fedha \n'
                                  '9. Dodoso - Biashara \n'
-                                 '10. Zote \n'
                                  )
 
     def unsubscribeConfirm(self, product):
