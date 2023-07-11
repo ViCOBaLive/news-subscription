@@ -18,7 +18,7 @@ def normalize_phone_number(phone_number):
         raise ValueError(' Invalid phone number')
 
     # Add the "07" prefix to the phone number
-    formatted_phone_number = '07' + phone_number[1:]
+    formatted_phone_number = '0' + phone_number
 
     return formatted_phone_number
 
@@ -28,13 +28,13 @@ class ussdMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        #get the initial endpoint url usnig django reverse
+        # get the initial endpoint url usnig django reverse
         initial_endpoint = reverse('index')
-        #build ana absolute url based on the inital endpoint for the request object to be used in the ussd handler
+        # build ana absolute url based on the inital endpoint for the request object to be used in the ussd handler
         BASE_URL = request.build_absolute_uri(initial_endpoint)
         try:
             if request.method == 'POST':
-                #request supplied by the user
+                # request supplied by the user
                 # Get the parameters from the request
                 session_id = request.POST.get('sessionId')
                 phone_number = request.POST.get('phoneNumber')
@@ -52,18 +52,18 @@ class ussdMiddleware:
                     # Return an error response if the phone number is invalid
                     response = HttpResponse(f'Error: {str(e)}')
                     response['Content-Type'] = 'text/plain'
-                    #cors headers
+                    # cors headers
                     response['Access-Control-Allow-Origin'] = '*'
                     return response
 
                 # check if the user has a language preference if not add one and set it to engish
                 lang = self.get_user_lang(phone_number)
-                
+
                 # normalize the text for go back or main menu inputs
                 text = self.go_Back(self.goToMainMenu(text))
-                
+
                 Handler = ussdHandler(
-                        text, session_id, phone_number, lang, BASE_URL,request).handler()
+                    text, session_id, phone_number, lang, BASE_URL, request).handler()
                 # Return the response with content type set to text/html
                 response = HttpResponse(Handler)
                 response['Content-Type'] = 'text/plain'
@@ -90,8 +90,6 @@ class ussdMiddleware:
             return cache.get(user_lang_cache_key)
         else:
             return language_pref
-
-      
 
     def go_Back(self, text):
         textArray = text.split("*")
