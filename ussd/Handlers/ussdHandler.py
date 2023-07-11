@@ -179,7 +179,7 @@ class ussdHandler():
                 print("Subscription successful.")
                 msg = ""
                 if self.lang == "EN":
-                    msg = f"You have successfully subcribed to {subcategory_name}, feel frEE to unsubscribe any time!"
+                    msg = f"You have successfully subscribed to {subcategory_name}, feel free to unsubscribe any time!"
                 else:
                     msg = f"Hongera, Umefanikiwa kujisajili na taarifa za {subcategory_name}, kua huru kujitoa mda wowote, asante "
                 self.sms.send_sms(self.phone_number, msg)

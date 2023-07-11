@@ -63,11 +63,11 @@ class RegisteredMenu:
 
     def PoliticsMenu(self):
         if self.lang == 'EN':
-            return self.get_menu('Please choose an account. \n'
-                                 '1. Domestic \n'
-                                 '2. International \n')
+            return self.get_menu('Please choose a politics. \n'
+                                 '1. Domestic politics \n'
+                                 '2. International politics \n')
         elif self.lang == 'SW':
-            return self.get_menu('Tafadhali chagua akaunti. \n'
+            return self.get_menu('Tafadhali chagua aina ya siasa. \n'
                                  '1. Siasa za Nyumbani \n'
                                  '2. Siasa za Nje  \n'
                                  )
