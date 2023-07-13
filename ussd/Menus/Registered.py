@@ -41,7 +41,7 @@ class RegisteredMenu:
 
     def MainMenu(self, groupName):
         if self.lang == 'EN':
-            return self.get_main_menu(f'Welcome to {groupName} Please Subscribe to. \n'
+            return self.get_main_menu(f'Welcome to {groupName}, Please Subscribe to. \n'
                                       '1. Politics \n'
                                       '2. Health \n'
                                       '3. Sports \n'
@@ -52,7 +52,7 @@ class RegisteredMenu:
 
                                       )
         elif self.lang == 'SW':
-            return self.get_main_menu(f'Karibu {groupName} ,Tafadhali chagua huduma. \n'
+            return self.get_main_menu(f'Karibu {groupName}, Tafadhali chagua huduma. \n'
                                       '1. Siasa \n'
                                       '2. Afya \n'
                                       '3. Michezo \n'
