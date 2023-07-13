@@ -38,6 +38,7 @@ class RegisteredMenu:
             return f"CON {text}\n98. Rudi Nyuma \n99. Menu Kuu \n"
 
     # menus for registered users
+    # printiiing
 
     def MainMenu(self, groupName):
         if self.lang == 'EN':
